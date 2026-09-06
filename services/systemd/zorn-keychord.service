@@ -1,0 +1,21 @@
+[Unit]
+Description=Volume-down + power = screenshot, Android style
+# Tied to the graphical session because the screenshot needs Spectacle on the
+# session bus. It also means the power-key grab is released at logout, so the
+# SDDM greeter gets its own power key back.
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/zorn-keychord.py
+# The EVIOCGRAB on the power key is the only thing keeping logind from powering
+# the phone off when it is pressed. If this dies the grab is released and that
+# behaviour returns, so come back promptly and say so in the journal.
+Restart=always
+RestartSec=2
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical-session.target

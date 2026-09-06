@@ -1,0 +1,39 @@
+diff --git a/drivers/input/touchscreen/Kconfig b/drivers/input/touchscreen/Kconfig
+index 7d5b72ee0..f960cbf33 100644
+--- a/drivers/input/touchscreen/Kconfig
++++ b/drivers/input/touchscreen/Kconfig
+@@ -805,6 +805,22 @@ config TOUCHSCREEN_EDT_FT5X06
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called edt-ft5x06.
+ 
++config TOUCHSCREEN_FOCALTECH_SPI
++	tristate "FocalTech SPI Touchscreen support"
++	depends on SPI_MASTER
++	select CRC_CCITT
++	help
++	  Say Y here if you have a FocalTech touchscreen attached over SPI,
++	  as found on several Xiaomi phones where the device tree names it
++	  "focal,touch-spi".  These parts report touches in the same format
++	  as the I2C FT5x06 family but wrap every register access in a
++	  CRC-checked SPI frame of their own.
++
++	  If unsure, say N.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called focaltech-spi-ts.
++
+ config TOUCHSCREEN_RASPBERRYPI_FW
+ 	tristate "Raspberry Pi's firmware base touch screen support"
+ 	depends on RASPBERRYPI_FIRMWARE || (RASPBERRYPI_FIRMWARE=n && COMPILE_TEST)
+diff --git a/drivers/input/touchscreen/Makefile b/drivers/input/touchscreen/Makefile
+index ab9abd151..cd99d0996 100644
+--- a/drivers/input/touchscreen/Makefile
++++ b/drivers/input/touchscreen/Makefile
+@@ -33,6 +33,7 @@ obj-$(CONFIG_TOUCHSCREEN_DA9034)	+= da9034-ts.o
+ obj-$(CONFIG_TOUCHSCREEN_DA9052)	+= da9052_tsi.o
+ obj-$(CONFIG_TOUCHSCREEN_DYNAPRO)	+= dynapro.o
+ obj-$(CONFIG_TOUCHSCREEN_EDT_FT5X06)	+= edt-ft5x06.o
++obj-$(CONFIG_TOUCHSCREEN_FOCALTECH_SPI)	+= focaltech-spi-ts.o
+ obj-$(CONFIG_TOUCHSCREEN_HAMPSHIRE)	+= hampshire.o
+ obj-$(CONFIG_TOUCHSCREEN_HYCON_HY46XX)	+= hycon-hy46xx.o
+ obj-$(CONFIG_TOUCHSCREEN_GUNZE)		+= gunze.o
